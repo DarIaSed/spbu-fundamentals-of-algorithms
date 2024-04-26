@@ -2,6 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 import os
+from collections import deque
 
 import yaml
 
@@ -22,40 +23,56 @@ class BinaryTree:
         return self.root is None
 
     def zigzag_level_order_traversal(self) -> list[Any]:
+        if self.empty():
+            return []
 
-        ##########################
-        ### PUT YOUR CODE HERE ###
-        ##########################
+        result = []
+        queue = deque([self.root])
+        zigzag = True
 
-        pass
+        while queue:
+            level_size = len(queue)
+            level_nodes = []
+
+            for _ in range(level_size):
+                node = queue.popleft()
+                level_nodes.append(node.key)
+
+                if node.left:
+                    queue.append(node.left)
+
+                if node.right:
+                    queue.append(node.right)
+            if zigzag:
+                result.append(level_nodes)
+            else:
+                result.append(level_nodes[::-1])
+
+            zigzag = not zigzag
+        return result
 
 
 def build_tree(list_view: list[Any]) -> BinaryTree:
     bt = BinaryTree()
 
-    ##########################
-    ### PUT YOUR CODE HERE ###
-    ##########################
+    nodes = []
 
-    pass
+    for item in list_view:
+        cur_node = Node(item)
+        if not (cur_node.key is None):
+            nodes.append(cur_node)
+        for i, node in enumerate(nodes):
+            if 2 * i + 1 < len(nodes):
+                node.left = nodes[2 * i + 1]
+            if 2 * i + 2 < len(nodes):
+                node.right = nodes[2 * i + 2]
+        bt.root = nodes[0]
+    return bt
 
 
 if __name__ == "__main__":
-    # Let's solve Binary Tree Zigzag Level Order Traversal problem from leetcode.com:
-    # https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
-    # First, implement build_tree() to read a tree from a list format to our class
-    # Second, implement BinaryTree.zigzag_traversal() returning the list required by the task
-    # Avoid recursive traversal!
 
-    with open(
-        os.path.join(
-            "practicum_5",
-            "homework",
-            "basic",
-            "binary_tree_zigzag_level_order_traversal_cases.yaml",
-        ),
-        "r",
-    ) as f:
+    with open("binary_tree_zigzag_level_order_traversal_cases.yaml", "r") as f:
         cases = yaml.safe_load(f)
 
     for i, c in enumerate(cases):
