@@ -5,12 +5,13 @@ from src.common import NDArrayFloat
 
 
 def inverse_power_method(A: NDArrayFloat, n_iters: int) -> NDArrayFloat:
-
-    ##########################
-    ### PUT YOUR CODE HERE ###
-    ##########################
-
-    pass
+    n = A.shape[0]
+    Q = np.random.randn(n, n)
+    Q, _ = np.linalg.qr(Q)
+    for _ in range(n_iters):
+        Q = np.linalg.solve(A, Q)
+        Q, _ = np.linalg.qr(Q)
+    return np.diag(Q.T @ A @ Q)
 
 
 if __name__ == "__main__":
@@ -23,3 +24,4 @@ if __name__ == "__main__":
         ]
     )
     eigvals = inverse_power_method(A, n_iters=10)
+    print(eigvals)
