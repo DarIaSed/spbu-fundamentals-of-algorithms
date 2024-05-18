@@ -7,7 +7,7 @@ ProblemCase = namedtuple("ProblemCase", "input, output")
 NDArrayInt = NDArray[np.int_]
 NDArrayFloat = NDArray[np.float_]
 
-def custom_inverse_power_method(A: NDArrayFloat, n_iters: int) -> NDArrayFloat:
+def inverse_power_method(A: NDArrayFloat, n_iters: int) -> NDArrayFloat:
     A = np.linalg.inv(A)
     min_eigenvalue_history = np.zeros((n_iters,))
     u_k = np.random.random(A.shape[0])
@@ -30,5 +30,5 @@ if __name__ == "__main__":
         [2.0, -1.0, 1.0, 1.0],
         ]
     )
-    eigvals = custom_inverse_power_method(A, n_iters=10)
+    eigvals = inverse_power_method(A, n_iters=10)
     print(eigvals)
